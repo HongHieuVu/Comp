@@ -1,0 +1,11 @@
+B1: mở file text và tạo một vector để chứa các dòng của file text đó.
+B2: nhập từng dòng của file text vào vector này, gọi là content vector.
+//Bắt đầu lập cây giá trị
+B3: Đếm xem từng ký tự xuất hiện bao nhiêu lần trong content
+B4: chia ra bấy nhiêu cây giá trị tương ứng (thuật toán tính số cây sao cho hiệu quả nhất nghĩ sau)
+B5: mã hoá content vector theo sơ đồ cây. 
+Note: content file compress tạm thời: 
+    Dòng 1: số cây
+    Các dòng tiếp theo (mỗi dòng là 1 cây): lần lượt chẵn là trái, lẻ là phải, giá trị của nhánh là ký tự nằm ở ô đó. Hết lượt tự thêm nhánh, nếu cả 2 đều là hết nhánh thì tự nhảy sang nhánh lớn tiếp theo. 
+    (!) Có 2 ký tự đặc biệt: hết nhánh và hết cây (ký tự thứ hai này là để báo hiệu chuyển sang cây mới để đỡ phải check hết cây sau mỗi lần đọc, có thể dùng newline tức là hết cây cũng được)
+Trong đó các dòng liên tục là các chữ ở vị trí trái hoặc phải
