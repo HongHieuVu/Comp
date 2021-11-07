@@ -1,2 +1,0 @@
-Dòng 1: Số cây
-N Dòng: bắt đầu từ cây 1, trái rồi phải, nếu hết nhánh thì có ký tự end (có thể dùng mỗi dòng một nhánh?)

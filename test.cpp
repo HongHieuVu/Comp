@@ -20,7 +20,7 @@ inline void initVtrs(int size){
 }
 
 int main(){
-    ifstream infile("sample.txt",ios::in);
+    ifstream infile(R"(C:\Users\APC\CLionProjects\Comp\sample.txt)",ios::in);
 
     string line;
     vector<content_element_type> content;

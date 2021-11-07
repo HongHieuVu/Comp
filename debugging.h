@@ -54,7 +54,6 @@ void printTreeVtr(){
 
 #define resetMapTreeLog ofstream logTreeFile("MapTreeLog.txt", ios::trunc);logFile.close();
 
-
 int logTree(int iter){
     ofstream logTreeFile ("MapTreeLog.txt", ios::app);
     logTreeFile.seekp(0,ios::end);
@@ -100,7 +99,7 @@ void printHuffmanCode(string note){
     cout << " " << note << " " << endl;
     int codeDepth = charMap.size();
     for(int i = 0; i<codeDepth; i++){
-        cout << i << ") " <<  "char: " << charMap[i] << " freq: " << leafs[i]->freq << " ";
+        cout << i << ") " << "char: " << charMap[i] << " freq: " << leaf[i]->freq << " ";
         int charDepth = huffmanCode[i].size();
         for(int j = 0; j<charDepth; j++){
             if((huffmanCode[i])[j] == rl::left) cout << 1;

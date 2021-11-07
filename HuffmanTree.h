@@ -6,86 +6,89 @@ using namespace std;
 
 int countH = 0, stop = 0;
 
-node::node (node* left, node* right) : lNode(left), rNode(right) {
-        freq = left->freq + right->freq;
-        right->urNode = this;
-        // right->ulNode = NULL;
-        left->ulNode = this;
-        // left->urNode = NULL;
-    }
-node::node (int charPos) : data(charMap[charPos]), freq(timesSeen[charPos]) {
-        lNode = NULL;
-        rNode = NULL;
-        isLeaf = true;
-    }
+node::node(node *left, node *right) : lNode(left), rNode(right) {
+    freq = left->freq + right->freq;
+    right->urNode = this;
+    // right->ulNode = NULL;
+    left->ulNode = this;
+    // left->urNode = NULL;
+}
+
+node::node(int charPos) : data(charMap[charPos]), freq(timesSeen[charPos]) {
+    lNode = nullptr;
+    rNode = nullptr;
+    isLeaf = true;
+}
 
 int lastNodePos;
 
-void generateTree(){
-    node* tmpNode = NULL;
-    int treeDepth = charMap.size();
-    for(int i = 0; i<treeDepth; i++){
-        node* pnew = new node(i);
+void generateTree() {
+    node *tmpNode;
+    int allChars = (int) charMap.size();
+
+    for (int i = 0; i < allChars; i++) {
+        node *pnew = new node(i);
         huffmanTree.push_back(pnew);
-        leafs.push_back(pnew);
+        leaf.push_back(pnew);
     }
-    // printTreeVtr();
-    // logTree(huffmanTree.size());
-    for(int i = huffmanTree.size()-1; i>0; i--){
+
+    for (int i = (int) huffmanTree.size() - 1; i > 0; i--) { //lose one node every iteration
+
         //branching
-        node* pnew = new node(huffmanTree[i], huffmanTree[i-1]);
+        node *pnew = new node(huffmanTree[i], huffmanTree[i - 1]);
+
         //erasing - do not delete pop_back allocated memory
         huffmanTree.pop_back();
         huffmanTree.pop_back();
-            // logTree(i);
+
         //appending
         huffmanTree.push_back(pnew);
-            // logTree(i);
+
         //floating
-        lastNodePos = i-1;
-        for(int j = lastNodePos; j>0; j--){
+        lastNodePos = i - 1;
+        for (int j = lastNodePos; j > 0; j--) {
+
             //the newly appended node floats to its position based on frequency
-            if(huffmanTree[j-1]->freq >= huffmanTree[j]->freq) break;
+            if (huffmanTree[j - 1]->freq >= huffmanTree[j]->freq) break;
             else {
-                tmpNode = huffmanTree[j-1];
-                huffmanTree[j-1] = huffmanTree[j];
+                tmpNode = huffmanTree[j - 1];
+                huffmanTree[j - 1] = huffmanTree[j];
                 huffmanTree[j] = tmpNode;
             }
-                // logTree(j);
         }
-            // logTree(i);
     }
-        // printTreeVtr();
-        // exploreNodes(huffmanTree[0], "highest node: ");
-        // exploreNodes(huffmanTree[0]->lNode, "1st l node: ");
-        // exploreNodes(huffmanTree[0]->rNode, "1st r node:");
+    // printTreeVtr();
+    // exploreNodes(huffmanTree[0], "highest node: ");
+    // exploreNodes(huffmanTree[0]->lNode, "1st l node: ");
+    // exploreNodes(huffmanTree[0]->rNode, "1st r node:");
 }
 
-void initHuffmanCodeVtr(){
-    vector <rl> newLine(0);
+void initHuffmanCodeVtr() {
+    vector<rl> newLine(0);
 
     int size = charMap.size();
-    int estimatedTreeDepth = (int) 2*sqrt(size)+1;
+    int estimatedTreeDepth = (int) 2 * sqrt(size) + 1;
     newLine.reserve(estimatedTreeDepth);
     huffmanCode.reserve(size);
 
-    for(int i = 0; i<size; i++){
+    for (int i = 0; i < size; i++) {
         huffmanCode.push_back(newLine);
     }
-
-    leafs.reserve(size);
 }
 
-void generateHuffmanCode(){
-    for(int c = leafs.size()-1; c>=0; c--){
-        node* curr = leafs[c];
+/**
+ * generate huffman code sequence for all characters. Basically a bottom up trace
+ */
+void generateHuffmanCode() {
+    for (int c = (int) leaf.size() - 1; c >= 0; c--) {
+        node *curr = leaf[c];
         // int currDepth = 0;
-        while (curr->ulNode != NULL || curr->urNode != NULL){
-            if(curr->urNode != NULL){
+        while (curr->ulNode != nullptr || curr->urNode != nullptr) {
+            if (curr->urNode != nullptr) {
                 // cout << "at: " << c << " depth: " << currDepth << " going right" << endl;
                 huffmanCode[c].push_back(rl::left);
                 curr = curr->urNode;
-            } else if(curr->ulNode != NULL){
+            } else if (curr->ulNode != nullptr) {
                 // cout << "at: " << c << " depth: " << currDepth << " going right" << endl;
                 huffmanCode[c].push_back(rl::right);
                 curr = curr->ulNode;
@@ -93,11 +96,12 @@ void generateHuffmanCode(){
             // currDepth ++;
         }
     }
+
     //reverse the order
     rl tmp;
-    for(int c = leafs.size()-1; c>=0; c--){
+    for (int c = leaf.size() - 1; c >= 0; c--) {
         int charCodeDepth = huffmanCode[c].size();
-        for(int i = charCodeDepth-1, j = 0; i>=(int) charCodeDepth/2; i--,j++){
+        for (int i = charCodeDepth - 1, j = 0; i >= (int) charCodeDepth / 2; i--, j++) {
             tmp = huffmanCode[c][i];
             huffmanCode[c][i] = huffmanCode[c][j];
             huffmanCode[c][j] = tmp;
